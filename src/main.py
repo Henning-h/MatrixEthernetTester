@@ -53,7 +53,7 @@ elif myname == 'RPI hjemme hos HHH':
     set_ipaddress_eth0('192.168.1.238')
     #set_ipaddress_wlan0('10.0.10.237')    
     
-elif
+else
     print('Devicename not found, ipaddress not set')
 
 

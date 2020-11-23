@@ -4,24 +4,8 @@ import subprocess
 import json
 import datetime
 import time
-import iperf3
 import csv
 from urllib.request import urlopen
-
-
-"""Old function using the iperf3 python wrapper"""
-def iperf_tester():
-    client = iperf3.Client()
-    client.duration = 1
-    client.server_hostname = '192.168.1.130'
-    client.port = 5201
-    client.verbose = True
-#    print('Connecting to {0}:{1}'.format(client.server_hostname, client.port))
-    result = client.run()
-#    print(result)
-    print(' Megabits per second: {0}'.format(result.sent_Mbps))
-    result_formatted = format(result.sent_Mbps)
-    return [result_formatted]
 
 
 """Run iperf3 and log output to example.csv"""
@@ -64,13 +48,5 @@ while True:
     write_csv(get_time())
     iperf_bash()
     time.sleep(3600)
-#    iperf_tester()
-#    write_csv(iperf_tester())
-#    time.sleep(60)
-#    i = 0
-#    for i in range(0,60):
-#        iperf_tester()
-#        write_csv(iperf_tester())
-#        i+=1
 
 

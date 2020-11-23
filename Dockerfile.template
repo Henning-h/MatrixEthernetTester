@@ -29,8 +29,8 @@ ENV UDEV=1
 CMD ["python","-u","src/main.py"]
 CMD ["iperf3","-s"]
 
-
-RUN curl -s -O -L https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz && \
+RUN apt-get install wget
+RUN wget https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz && \
 	apt-get install -y make build-essential libssl-dev zlib1g-dev \
 	libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
 	libncurses5-dev libncursesw5-dev xz-utils tk-dev && \

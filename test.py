@@ -5,16 +5,15 @@ import json
 import datetime
 import time
 import iperf3
-import requests
 import csv
 from urllib.request import urlopen
-from subprocess import Popen, PIPE, STDOUT
 
 
+"""Old function using the iperf3 python wrapper"""
 def iperf_tester():
     client = iperf3.Client()
     client.duration = 1
-    client.server_hostname = '127.0.0.1'
+    client.server_hostname = '192.168.1.130'
     client.port = 5201
     client.verbose = True
 #    print('Connecting to {0}:{1}'.format(client.server_hostname, client.port))
@@ -25,10 +24,12 @@ def iperf_tester():
     return [result_formatted]
 
 
+"""Run iperf3 and log output to example.csv"""
 def iperf_bash():
-    subprocess.run(['iperf3', '-c', '127.0.0.1', '-t', '60', '--logfile', '>>', 'example.csv'])
+    subprocess.run(['iperf3', '-c', '192.168.1.130', '-t', '60', '--logfile', 'example.csv'])
 
 
+"""Get weather in json file, pick out relevant data"""
 def get_weather():
     with urlopen("http://wttr.in/Stavanger?format=j1") as response:
         source = response.read()
@@ -42,12 +43,14 @@ def get_weather():
     return temp, pressure, cloudcover, weather
 
 
+"""csv writer"""
 def write_csv(data):
     with open('example.csv', 'a', newline='') as outfile:
         writer = csv.writer(outfile)
         writer.writerow(data)
 
 
+"""get time"""
 def get_time():
     curr_time = datetime.datetime.now()
     curr_time = curr_time.strftime("%b %d %Y %H:%M:%S")
@@ -55,10 +58,12 @@ def get_time():
     return [curr_time]
 
 
+"""main loop"""
 while True:
     write_csv(get_weather())
     write_csv(get_time())
     iperf_bash()
+    time.sleep(3600)
 #    iperf_tester()
 #    write_csv(iperf_tester())
 #    time.sleep(60)

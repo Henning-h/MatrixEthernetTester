@@ -6,7 +6,7 @@ FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3-stretch-run
 # for instance if you need git, just uncomment the line below.
 # RUN install_packages git
 RUN apt-get clean && apt-get update && apt-get install -yq \
-	build-essential libffi-dev libssl-dev iperf3 \
+	build-essential libffi-dev libssl-dev iperf3 ssh \
     && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -18,6 +18,8 @@ COPY requirements.txt requirements.txt
 
 # pip install python deps from requirements.txt on the resin.io build server
 RUN pip install -r requirements.txt
+RUN useradd -m -s /bin/bash innova
+RUN echo "innova:innova" | chpasswd
 
 # This will copy all files in our root to the working  directory in the container
 COPY . ./
@@ -26,5 +28,7 @@ COPY . ./
 ENV UDEV=1
 
 # main.py will run when container starts up on the device
-CMD ["python","-u","src/main.py"]
 CMD ["iperf3","-s"]
+CMD ["python","-u","src/main.py"]
+
+

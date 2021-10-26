@@ -1,3 +1,2 @@
 Flask
-balena-sdk
 pyroute2

@@ -1,6 +1,7 @@
 from pyroute2 import IPDB
 from flask import Flask
 import os
+import subprocess
 ipdb = IPDB()
 
 myname = os.getenv('RESIN_DEVICE_NAME_AT_INIT')
@@ -22,20 +23,20 @@ if myname == 'Server_C1':
     set_ipaddress_wlan0('10.0.10.230')
     
 elif myname == 'Client_C1':
-    set_ipaddress_eth0('192.168.88.231')
-    set_ipaddress_wlan0('10.0.10.231') 
+    set_ipaddress_eth0('192.168.88.233')
+    set_ipaddress_wlan0('10.0.10.233') 
 
 elif myname == 'Server_C2':
-    set_ipaddress_eth0('192.168.88.232')
-    set_ipaddress_wlan0('10.0.10.232')
+    set_ipaddress_eth0('192.168.88.231')
+    set_ipaddress_wlan0('10.0.10.231')
 
 elif myname == 'Client_C2':
-    set_ipaddress_eth0('192.168.88.233')
-    set_ipaddress_wlan0('10.0.10.233')
-    
-elif myname == 'Server_C3':
     set_ipaddress_eth0('192.168.88.234')
     set_ipaddress_wlan0('10.0.10.234')
+    
+elif myname == 'Server_C3':
+    set_ipaddress_eth0('192.168.88.232')
+    set_ipaddress_wlan0('10.0.10.232')
 
 elif myname == 'Client_C3_1':
     set_ipaddress_eth0('192.168.88.235')
@@ -56,7 +57,8 @@ elif myname == 'RPI hjemme hos HHH':
 else:
     print('Devicename not found, ipaddress not set')
 
-
+subprocess.Popen(["service","ssh","start"])
+subprocess.Popen(["iperf3","-s","&"])
 
 app = Flask(__name__)
 
